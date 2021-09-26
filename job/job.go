@@ -1,6 +1,10 @@
 package job
 
-import "time"
+import (
+	"gopkg.in/gomail.v2"
+	"time"
+	"timeweel-job/channel"
+)
 
 const (
 	Day   = 24 * time.Hour
@@ -43,5 +47,22 @@ type RunPrint struct {
 
 func (r *RunPrint) Run() error {
 	println("text is :", r.Text)
+	return nil
+}
+
+type Email struct {
+	Subject string
+	Text    string
+}
+
+func (e Email) Run() error {
+	m := gomail.NewMessage()
+	m.SetHeader("From", "fishis@163.com")
+	m.SetHeader("To", "bitmyth@outlook.com", "fishis@163.com")
+	m.SetAddressHeader("Cc", "1091301899@qq.com", "qq")
+	m.SetHeader("Subject", e.Subject)
+	m.SetBody("text/html", e.Text)
+	//m.Attach("/home/Alex/lolcat.jpg")
+	channel.Send(m)
 	return nil
 }

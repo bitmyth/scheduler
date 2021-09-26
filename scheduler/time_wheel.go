@@ -93,6 +93,7 @@ func (t *TimeWheel) Add(job *job.Job) {
 		ticks = int(math.Ceil(sub.Seconds()))
 	case time.Minute:
 		ticks = int(math.Ceil(sub.Minutes()))
+		println("ticks:",ticks)
 	}
 
 	round := ticks / len(t.Slots)
@@ -103,6 +104,9 @@ func (t *TimeWheel) Add(job *job.Job) {
 	task := &Task{
 		Job:   job,
 		Round: round,
+	}
+	if slotIndex < 0 {
+		slotIndex = 1
 	}
 	t.Slots[slotIndex].PushBack(task)
 }
